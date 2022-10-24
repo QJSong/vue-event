@@ -35,10 +35,53 @@
     </el-header>
     <el-container>
       <!-- 侧边栏区域 -->
-      <el-aside width="200px">Aside</el-aside>
+      <el-aside width="200px">
+        <div class="user-box">
+          <img :src="user_pic" alt="" v-if="user_pic" />
+          <img src="../../assets/images/logo.png" alt="" v-else />
+          <span>欢迎 {{ nickname || username }}</span>
+        </div>
+        <el-menu
+          default-active="/home"
+          class="el-menu-vertical-demo"
+          @open="handleOpen"
+          @close="handleClose"
+          background-color="#23262E"
+          text-color="#fff"
+          active-text-color="#409EFF"
+          unique-opened
+          router
+        >
+          <template v-for="item in menusList">
+            <el-menu-item
+              v-if="!item.children"
+              :key="item.indexPath"
+              :index="item.indexPath"
+            >
+              <i :class="item.icon"></i>
+              <span slot="title">{{ item.title }}</span>
+            </el-menu-item>
+
+            <el-submenu v-else :key="item.indexPath" :index="item.indexPath">
+              <template slot="title">
+                <i :class="item.icon"></i>
+                <span>{{ item.title }}</span>
+              </template>
+              <el-menu-item
+                v-for="(obj, index) in item.children"
+                :key="index"
+                :index="obj.indexPath"
+              >
+                <i :class="obj.icon"></i>
+                <span slot="title">{{ obj.title }}</span>
+              </el-menu-item>
+            </el-submenu>
+          </template>
+        </el-menu>
+      </el-aside>
       <el-container>
         <!-- 页面主体区域 -->
-        <el-main> Main.vue后台主页 </el-main>
+        <el-main> <router-view></router-view> </el-main>
         <!-- 底部 footer 区域 -->
         <el-footer>© www.itheima.com - 黑马程序员</el-footer>
       </el-container>
@@ -47,8 +90,18 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { menusAPI } from '@/api'
 export default {
   name: 'my-layout',
+  data () {
+    return {
+      menusList: []
+    }
+  },
+  computed: {
+    ...mapGetters(['username', 'nickname', 'user_pic'])
+  },
   methods: {
     quitFn () {
       this.$confirm('确定退出吗？这就不爱我了？', '提示', {
@@ -60,13 +113,30 @@ export default {
           // 点击了确定
           // 清除token
           this.$store.commit('updateToken', '')
+          this.$store.commit('updateUserInfo', {})
           // 跳转登陆页面
           this.$router.push('/login')
         })
         .catch(() => {
           // 点击了取消
         })
+    },
+    handleOpen (key, keyPath) {
+      console.log(key, keyPath)
+    },
+    handleClose (key, keyPath) {
+      console.log(key, keyPath)
+    },
+    // 获取左侧边栏的方法
+    async getMenusList () {
+      const res = await menusAPI()
+      console.log(res)
+      this.menusList = res.data.data
     }
+  },
+  created () {
+    // 调用方法
+    this.getMenusList()
   }
 }
 </script>
@@ -104,5 +174,28 @@ export default {
   background-color: #fff;
   margin-right: 10px;
   object-fit: cover;
+}
+
+// 左侧边栏用户信息区域
+.user-box {
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  user-select: none;
+  img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #fff;
+    margin-right: 15px;
+    object-fit: cover;
+  }
+  span {
+    color: white;
+    font-size: 12px;
+  }
 }
 </style>

@@ -5,9 +5,11 @@
 </template>
 
 <script>
-
+// import { getUserInfoAPI } from '@/api'
 export default {
+  // created () {
 
+  // }
 }
 </script>
 

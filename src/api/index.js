@@ -20,3 +20,16 @@ export const loginAPI = ({ username, password }) => request({
     password
   }
 })
+
+// 获取用户信息接口
+export const getUserInfoAPI = () => request({
+  url: '/my/userinfo',
+  method: 'GET'
+
+})
+
+// 左侧侧边栏数据接口
+export const menusAPI = () => request({
+  url: '/my/menus'
+
+})
