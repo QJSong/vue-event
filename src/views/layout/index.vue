@@ -42,7 +42,7 @@
           <span>欢迎 {{ nickname || username }}</span>
         </div>
         <el-menu
-          default-active="/home"
+          :default-active="$route.path"
           class="el-menu-vertical-demo"
           @open="handleOpen"
           @close="handleClose"
@@ -130,7 +130,7 @@ export default {
     // 获取左侧边栏的方法
     async getMenusList () {
       const res = await menusAPI()
-      console.log(res)
+      // console.log(res)
       this.menusList = res.data.data
     }
   },

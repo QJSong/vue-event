@@ -79,7 +79,7 @@ export default {
           // token 存到vuex里
           this.updateToken(res.token)
           // 跳转到首页
-          this.$router.push('layout')
+          this.$router.push('/')
         } else {
           return false
         }

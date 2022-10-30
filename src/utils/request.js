@@ -2,8 +2,9 @@ import axios from 'axios'
 import store from '@/store'
 import router from '@/router'
 
+export const baseURL = 'http://big-event-vue-api-t.itheima.net'
 const myAxios = axios.create({
-  baseURL: 'http://big-event-vue-api-t.itheima.net'
+  baseURL: baseURL
 })
 
 // 定义请求拦截器 统一携带token

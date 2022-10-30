@@ -7,27 +7,50 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/login'
+    component: () => import('@/views/layout'), //  默认显示布局页面
+    redirect: '/home',
+    children: [
+      {
+        // 首页
+        path: 'home',
+        component: () => import('@/views/home')
+      },
+      {
+        // 用户编辑信息页面
+        path: 'user-info',
+        component: () => import('@/views/user/userInfo.vue')
+      },
+      {
+        // 编辑头像
+        path: 'user-avatar',
+        component: () => import('@/views/user/userAvatar.vue')
+      },
+      {
+        // 修改密码
+        path: 'user-pwd',
+        component: () => import('@/views/user/userPwd.vue')
+      },
+      {
+        path: 'art-cate',
+        component: () => import('@/views/article/artCate.vue')
+      },
+      {
+        path: 'art-list',
+        component: () => import('@/views/article/artList.vue')
+      }
+    ]
   },
   {
+    // 注册页面
     path: '/register',
     component: () => import('@/views/register')
   },
   {
+    // 登录页面
     path: '/login',
     component: () => import('@/views/login')
-  },
-  {
-    path: '/layout',
-    component: () => import('@/views/layout'),
-    redirect: '/layout/home',
-    children: [
-      {
-        path: 'home',
-        component: () => import('@/views/home')
-      }
-    ]
   }
+
 ]
 
 const router = new VueRouter({
